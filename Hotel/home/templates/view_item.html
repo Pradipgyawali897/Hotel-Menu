@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ item.name }} Details{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <!-- Item Details Card -->
+            <div class="item-details">
+                <h2>{{ item.name }}</h2>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="item-property">
+                            <span class="label">ID:</span>
+                            <span class="value">{{ item.ID }}</span>
+                        </div>
+                        <div class="item-property">
+                            <span class="label">Category:</span>
+                            <span class="value">{{ item.topic.name|default:"None" }}</span>
+                        </div>
+                        <div class="item-property">
+                            <span class="label">Added by:</span>
+                            <span class="value">{{ item.host.username }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="item-property">
+                            <span class="label">Status:</span>
+                            {% if item.availability %}
+                                <span class="badge bg-success badge-lg">Available</span>
+                            {% else %}
+                                <span class="badge bg-danger badge-lg">Unavailable</span>
+                            {% endif %}
+                        </div>
+                        <div class="item-property">
+                            <span class="label">Created:</span>
+                            <span class="value">{{ item.date_created }}</span>
+                        </div>
+                        <div class="item-property">
+                            <span class="label">Last Updated:</span>
+                            <span class="value">{{ item.updated|date:"F d, Y H:i" }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="item-property">
+                    <h4 class="label mb-2">Description:</h4>
+                    <p class="value">{{ item.description }}</p>
+                </div>
+                
+                <div class="d-flex gap-3 mt-4">
+                    <a href="{% url 'list_items' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Menu
+                    </a>
+                    {% if request.user == item.host %}
+                        <a href="{% url 'update_item' item.ID %}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Edit Item
+                        </a>
+                        <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteViewModal">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    {% if request.user == item.host %}
+        <div class="modal fade" id="deleteViewModal" tabindex="-1" aria-labelledby="deleteViewModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteViewModalLabel">Confirm Deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete "{{ item.name }}"?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form method="POST" action="{% url 'delete_item' item.ID %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
