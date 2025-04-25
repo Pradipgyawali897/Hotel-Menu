@@ -1,13 +1,53 @@
 {% extends 'base.html' %}
-{% block title %}Update Item{% endblock %}
+{% load static %}
+{% block title %}Update Menu Item{% endblock %}
 {% block content %}
-    <h1>Update Item</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary">Update</button>
-            <a href="{% url 'list_items' %}" class="btn btn-outline-secondary">Cancel</a>
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h1>Update Menu Item</h1>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="form-group mb-4">
+                            <label for="{{ form.name.id_for_label }}" class="form-label">Name (Maximum 12 characters)</label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                                <div class="form-error">{{ form.name.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="{{ form.ID.id_for_label }}" class="form-label">ID (Must be unique)</label>
+                            {{ form.ID }}
+                            {% if form.ID.errors %}
+                                <div class="form-error">{{ form.ID.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group form-check mb-4">
+                            {{ form.availability }}
+                            <label for="{{ form.availability.id_for_label }}" class="form-check-label ms-2">Available</label>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="form-error">{{ form.description.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="{{ form.topic.id_for_label }}" class="form-label">Category</label>
+                            {{ form.topic }}
+                            {% if form.topic.errors %}
+                                <div class="form-error">{{ form.topic.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Update</button>
+                            <a href="{% url 'list_items' %}" class="btn btn-outline-secondary"><i class="fas fa-times"></i> Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </form>
+    </div>
 {% endblock %}

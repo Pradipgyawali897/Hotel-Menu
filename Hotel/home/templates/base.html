@@ -4,129 +4,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Menu - {% block title %}Home{% endblock %}</title>
+    <title>Hotel Royale - {% block title %}Menu{% endblock %}</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWixU2C9B2Y5gL6gSrZ1uW5dOQ1b+/k0z2e0eB0e0eB0e0eB0e0eB0e0eB0e0eB0e0eB0e0" crossorigin="anonymous">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}">
     <!-- Custom CSS -->
     <style>
         body {
-            font-family: 'Playfair Display', serif;
-            background-color: #f8f1e9;
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(rgba(26, 43, 74, 0.85), rgba(26, 43, 74, 0.85)), url('{% static "images/hotel-bg.jpg" %}') no-repeat center center fixed;
+            background-size: cover;
             color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         .navbar {
-            background-color: #4a3728;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: linear-gradient(to right, #1a2b4a, #2e4372);
+            padding: 20px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .navbar-brand {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #f4e1d2 !important;
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            color: #d4a017 !important;
+            display: flex;
+            align-items: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .navbar-brand img {
+            height: 45px;
+            margin-right: 12px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
         .navbar-nav .nav-link {
-            color: #f4e1d2 !important;
-            font-size: 1.1rem;
-            margin-left: 15px;
-            transition: color 0.3s;
+            color: #f9f4e8 !important;
+            font-size: 1.2rem;
+            margin: 0 20px;
+            transition: color 0.3s, transform 0.3s;
         }
         .navbar-nav .nav-link:hover {
-            color: #e6b800 !important;
+            color: #d4a017 !important;
+            transform: scale(1.15);
         }
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        .container-main {
+            max-width: 1300px;
+            margin: 50px auto;
+            padding: 40px;
+            background: #f9f4e8;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+            animation: fadeIn 1.2s ease-in;
+            position: relative;
+            overflow: hidden;
+        }
+        .container-main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #d4a017, #f9f4e8);
         }
         h1 {
-            color: #4a3728;
+            font-family: 'Cinzel', serif;
+            color: #1a2b4a;
             font-weight: 700;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
         }
         .btn-primary {
-            background-color: #4a3728;
-            border-color: #4a3728;
-            transition: background-color 0.3s;
+            background-color: #d4a017;
+            border-color: #d4a017;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
         }
         .btn-primary:hover {
-            background-color: #6b4e31;
-            border-color: #6b4e31;
+            background-color: #b8860b;
+            border-color: #b8860b;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(212,160,23,0.4);
         }
         .btn-outline-secondary {
-            color: #4a3728;
-            border-color: #4a3728;
+            color: #1a2b4a;
+            border-color: #1a2b4a;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s;
         }
         .btn-outline-secondary:hover {
-            background-color: #4a3728;
-            color: #fff;
+            background-color: #1a2b4a;
+            color: #f9f4e8;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(26,43,74,0.3);
         }
         .alert {
-            border-radius: 10px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            animation: slideIn 0.6s ease-in;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
         .table {
             background-color: #fff;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
         .table th {
-            background-color: #4a3728;
-            color: #f4e1d2;
+            background: linear-gradient(to bottom, #1a2b4a, #2e4372);
+            color: #f9f4e8;
+            font-family: 'Cinzel', serif;
             font-weight: 600;
+            padding: 15px;
         }
         .table td {
             vertical-align: middle;
+            padding: 15px;
+            transition: background-color 0.3s;
+        }
+        .table tr:hover {
+            background-color: #f4f4f4;
         }
         .actions a {
-            margin-right: 10px;
-            font-size: 0.9rem;
+            margin-right: 12px;
+            font-size: 0.95rem;
+            transition: color 0.3s, transform 0.3s;
         }
-        .form-control {
-            border-radius: 8px;
-            border: 1px solid #ced4da;
+        .actions a:hover {
+            color: #d4a017 !important;
+            transform: scale(1.1);
         }
-        .form-group {
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 1px solid #1a2b4a;
+            font-size: 1rem;
+            padding: 12px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #d4a017;
+            box-shadow: 0 0 8px rgba(212,160,23,0.5);
+        }
+        .form-check-input:checked {
+            background-color: #d4a017;
+            border-color: #d4a017;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #1a2b4a;
+        }
+        footer {
+            background: linear-gradient(to bottom, #1a2b4a, #2e4372);
+            color: #f9f4e8;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: auto;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+        }
+        footer a {
+            color: #d4a017;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        footer a:hover {
+            color: #f9f4e8;
+        }
+        .modal-content {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            background: #1a2b4a;
+            color: #f9f4e8;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        .item-details {
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        .item-details h2 {
+            color: #1a2b4a;
+            font-family: 'Cinzel', serif;
+            border-bottom: 2px solid #d4a017;
+            padding-bottom: 10px;
             margin-bottom: 20px;
         }
+        .item-property {
+            margin-bottom: 15px;
+        }
+        .item-property .label {
+            font-weight: 600;
+            color: #1a2b4a;
+        }
+        .badge-lg {
+            font-size: 1rem;
+            padding: 8px 15px;
+        }
+        .form-error {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
         @media (max-width: 768px) {
-            .container {
-                margin: 15px;
-                padding: 15px;
+            .container-main {
+                margin: 20px;
+                padding: 20px;
             }
             h1 {
                 font-size: 1.8rem;
             }
+            .navbar-brand {
+                font-size: 1.6rem;
+            }
+            .navbar-brand img {
+                height: 35px;
+            }
+            .navbar-nav .nav-link {
+                margin: 10px 0;
+            }
         }
     </style>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'list_items' %}">Hotel Elegance</a>
+            <a class="navbar-brand" href="{% url 'list_items' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Hotel Royale"> Hotel Royale
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'list_items' %}">Menu</a>
+                        <a class="nav-link" href="{% url 'list_items' %}"><i class="fas fa-utensils me-2"></i> Menu</a>
                     </li>
                     {% if request.user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'add_item' %}">Add Item</a>
+                            <a class="nav-link" href="{% url 'add_item' %}"><i class="fas fa-plus-circle me-2"></i> Add Item</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Logout ({{ request.user.username }})</a>
+                            <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i> Logout (Welcome, {{ request.user.username }})</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'loginpage' %}">Login</a>
+                            <a class="nav-link" href="{% url 'loginpage' %}"><i class="fas fa-sign-in-alt me-2"></i> Login</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -135,7 +279,7 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="container">
+    <div class="container-main">
         <!-- Messages -->
         {% if messages %}
             {% for message in messages %}
@@ -151,7 +295,30 @@
         {% endblock %}
     </div>
 
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2025 Hotel Royale. Crafted with <i class="fas fa-heart text-danger"></i> by Pradip Gyawali.</p>
+            <p><a href="mailto:contact@hotelroyale.com">Contact Us</a> | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
+    <!-- Custom JS -->
+    <script>
+        // Show toast messages
+        document.addEventListener('DOMContentLoaded', function() {
+            var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+            var toastList = toastElList.map(function(toastEl) {
+                return new bootstrap.Toast(toastEl, {
+                    autohide: true,
+                    delay: 5000
+                });
+            });
+            toastList.forEach(toast => toast.show());
+        });
+    </script>
 </body>
 </html>
